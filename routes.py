@@ -14,8 +14,8 @@ app = Flask(__name__)
 app.secret_key = "cscie14a-midterm"
 
 # local postgresql or heroku postgresql 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Winchester110283@localhost:5432/midterm_db'
-heroku = Heroku(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Winchester110283@localhost:5432/midterm_db'
+#heroku = Heroku(app)
 
 db.init_app(app)
 
@@ -112,8 +112,8 @@ def like(mlsnum):
 	return redirect(url_for('info', mlsnum=mlsnum))
 
 # unlike route
-@app.route('/unlike/<mlsnum>', methods=['POST'])
-def unlike(mlsnum):
+@app.route('/unlike/<mlsnum>/<from_url>', methods=['POST'])
+def unlike(mlsnum, from_url):
 	session_user = Users.query.filter_by(username=session['username']).first()
 	condo_to_unlike = Condos.query.filter_by(mlsnum=mlsnum).first()
 	delete_like = Likes.query.filter_by(liker=session_user.uid, liked=condo_to_unlike.cid).first()
@@ -121,7 +121,7 @@ def unlike(mlsnum):
 
 	db.session.delete(delete_like)
 	db.session.commit()
-	return redirect(url_for('info', mlsnum=mlsnum))
+	return redirect(url_for(from_url, mlsnum=mlsnum))
 
 # profile route
 @app.route('/profile', methods=['GET'])

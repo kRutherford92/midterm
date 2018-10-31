@@ -7,6 +7,7 @@ d3.json("/load_data", function(data){
 // define variable scatter_data
 // define svg, margin, width, height, and g elements
 data = data['condos'];
+console.log(data);
 var bedrooms_data = d3.nest()
 .key(function(d){
   return d.beds;
