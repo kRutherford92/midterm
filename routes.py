@@ -14,8 +14,8 @@ app = Flask(__name__)
 app.secret_key = "cscie14a-midterm"
 
 # local postgresql or heroku postgresql 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Winchester110283@localhost:5432/midterm_db'
-#heroku = Heroku(app)
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Winchester110283@localhost:5432/midterm_db'
+heroku = Heroku(app)
 
 db.init_app(app)
 
