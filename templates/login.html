@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="content-section">
+    <div class="container text-center">
+        <div class="mx-auto">
+
+    <h1>Log In</h1>
+    
+    <form method="POST" action="/login" novalidate>
+    	{{ form.hidden_tag() }}    	
+    
+    <!-- username --> 
+    	<div class="form-group">
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+                <span style="color:red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    <!-- password --> 
+    	<div class="form-group">
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+                <span style="color:red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+    <!-- login button --> 
+    	{{ form.submit(class="btn btn-primary btn-x1") }}
+    </form>
+    <!-- new user? click to register --> 
+    <p>New User? <a href="{{ url_for('signup') }}">Click to Register!</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

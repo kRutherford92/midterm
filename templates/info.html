@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block content %}
+
+ <section class="content-section">
+      <div class="container text-center">
+
+        <h1>Condo Details
+
+        <!-- if user likes the listing show "Your Favorite!"" --> 
+          {% if liked %}
+            | Your Favorite!
+          {% endif %}
+
+         </h1><br>
+
+      <div class="col-sm-6">  
+      <img class="img-thumbnail" src={{ condo.photo_url }} height="550" width="550"> <!-- define source --> 
+      </div>
+
+      <div class="col-sm-6 text-left">
+       
+        <!-- mls number, bedroom, bathroom, sqft, ppsf, listing price, predicted price --> 
+        <b>MLS # {{ condo.mlsnum }}</b>
+        <br><br>
+        <p>Bedrooms: <b>{{ condo.beds }}</b> | Bathrooms: <b>{{ condo.baths }}</b> | Sqft: <b>{{ condo.sqft }}</b> | Price per sqft: <b>${{ condo.ppsf }}</b></p>
+        <br>
+        <p>Listing Price: <b>${{ condo.list_price }}</b><br>Predicted Price: <b>${{ condo.predicted_price }}</b></p>
+
+        <blockquote><!-- remarks -->{{ condo.remarks }} </blockquote> 
+      
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+        <!-- if user in session --> 
+        {% if session_username is defined %}
+          {% if liked %}
+        <!-- if listing in favorite  --> 
+
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+        
+        <!-- remove from favorites button  --> 
+        <form action="/unlike/{{ condo.mlsnum }}" method="POST">
+          <button type="submit" class="btn btn-primary btn-lg js-scroll-trigger"> Remove from Favorites </button>
+        </form>
+
+      </div>
+
+      <!-- else  --> 
+          {% else %}
+      
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+
+      <!-- save to favorites button  --> 
+          <form action="/like/{{ condo.mlsnum }}" method="POST">
+            <button type="submit" class="btn btn-primary btn-lg js-scroll-trigger"> Save to Favorites </button>
+          </form>
+
+      </div>
+      
+      <!-- end if --> 
+          {% endif %}
+
+      <div class="btn-group mr-2" role="group" aria-label="Third group">
+      
+      <!-- favorites button --> 
+        <form action="/profile" method="GET">
+          <button type="submit" class="btn btn-primary btn-lg js-scroll-trigger"> Favorites </button>
+        </form>
+      
+      </div>
+
+      <div class="btn-group mr-2" role="group" aria-label="Fourth group">
+      
+      <!-- home button --> 
+      <form action="/index">
+        <button class="btn btn-primary btn-lg js-scroll-trigger"> Home </button>
+      </form>
+
+      </div>
+
+      <!-- else  --> 
+        {% else %}
+
+      <div class="btn-group mr-2" role="group" aria-label="Fourth group">
+      
+      <!-- home button --> 
+      <form action="/index">
+        <button class="btn btn-primary btn-lg js-scroll-trigger"> Home </button>
+      </form>
+      
+      
+
+      </div>
+     </div>  
+    </div>
+  </div>
+</section>
+        {% endif %}
+{% endblock %}
+

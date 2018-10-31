@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+  {% block content %}
+
+    <section class="content-section">
+        <div class="container text-center">
+
+      <!-- if user in session -->
+
+      {% if session_username is defined %}
+
+          <div class="row">
+          <h1> <!-- session username's favorites  -->{{ session_username }}'s Favorites </h1>
+
+          <!-- Home button  --> 
+          <form action="/index">
+            <button class="btn btn-primary btn-lg js-scroll-trigger"> Home </button>
+          </form>
+
+        </div>
+        <br>
+
+        <!-- for every listing in favorites  --> 
+
+        {% for c in condos %}
+          <div class="row">
+            <div class="col-sm-3">
+              </div>   
+
+              <div class="col-sm-3">
+              <img width=200 height=200 class="img-thumbnail" src={{ c.photo_url }}> <!-- add SOURCE --> 
+              </div>  
+
+              <div class="col-sm-6 text-left">          
+                 <h4> MLS number: <a href="/info/{{ c.mlsnum }}">  {{ c.mlsnum }}<!-- add MLS number -->  </a> </h4>
+                  <p>Beds Number: {{ c.beds }}<!-- add Beds # here --> <br>
+                  Baths Number: {{ c.baths }}<!-- add Baths # here --> <br>
+                  Listing Price: $ {{ c.list_price }}<!-- add Listing price here --> </p>
+
+                  <!-- Remove Button --> 
+                  <form action="/unlike/{{ c.mlsnum }}" method="POST">
+                    <button type="submit" class="btn btn-primary btn-lg js-scroll-trigger"> Remove </button>
+                  </form>
+
+              </div> 
+          </div>    
+
+        <!-- end for --> 
+        {% endfor %}
+        <!-- end if --> 
+        {% endif %}
+
+      </div>
+  </section>
+{% endblock %}

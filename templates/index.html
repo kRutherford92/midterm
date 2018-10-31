@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <script src="http://d3js.org/d3.v4.min.js"></script> 
+    <header class="masthead d-flex">
+    <div class="container my-auto">   
+	  <div class="col-sm-5">
+
+      <!-- if user in session  -->
+      {% if session_username is defined %}
+        <h1 class="mb-2">Welcome, {{ session_username }}!</h1>
+
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+       
+      <!-- Saved button -->
+        <form action="/profile" method="GET">
+          <button type="submit" class="btn btn-primary btn-lg js-scroll-trigger">Saved</button>
+        </form>
+
+      </div>
+      <div class="btn-group mr-2" role="group" aria-label="Second group">
+
+      <!-- Logout button -->
+      <form action="/logout" method="POST">
+        <button type="submit" class="btn btn-secondary btn-lg js-scroll-trigger">Log out</button>
+      </form>
+
+      </div>
+      </div>
+     
+      <!-- else  -->
+      {% else %}
+        <h1 class="mb-2">Welcome, Guest!</h1>
+
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+
+      <!-- Login button  -->
+        <form action="/login" method="GET">
+          <button type="submit" class="btn btn-primary btn-lg js-scroll-trigger">Log in</button>
+        </form>
+
+      </div> 
+      <div class="btn-group mr-2" role="group" aria-label="Second group">
+         
+      <!-- Signup button  -->
+      <form action="/signup" method="GET">
+        <button type="submit" class="btn btn-primary btn-lg js-scroll-trigger"> Sign up </button>
+      </form>
+
+      </div>  
+      </div>
+      
+      <!-- end if  -->
+      {% endif %}
+
+      <svg width="400" height="230" id="donutChart"></svg><br><br>
+      <svg width="400" height="250" id="scatterChart"></svg>
+
+    </div>
+
+	  <div class="col-sm-7">
+        <h1>Boston Area Condos | total: <span id='total'> <!-- add number here  -->{{ condos|length }} </span> </h1> 
+      <div id="station-map"></div>
+    </div>
+
+  </div>
+</header>
+<script src="static/js/leaflet.js"></script> 
+<script src="static/js/main_map.js"></script> 
+<script src="static/js/pie_and_hist.js"></script> 
+<script src="static/js/stationMap.js"></script> 
+
+{% endblock %}
