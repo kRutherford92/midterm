@@ -7,7 +7,7 @@ d3.json("/load_data", function(data){
 // define variable scatter_data
 // define svg, margin, width, height, and g elements
 data = data['condos'];
-console.log(data);
+
 var bedrooms_data = d3.nest()
 .key(function(d){
   return d.beds;
@@ -93,7 +93,14 @@ var path = g.selectAll('path')
   .select(".text-group").remove();
 })
 .on("click", function(d){
-  updateScatter(d.data.key)
+  var scatterData = new Array();
+  var i = 0;
+  for(c=0;c<data.length;c++){
+    if(data[c].beds==d.data.key){
+      scatterData[i++]=data[c];
+    }
+  }
+  updateScatter(scatterData);
 })
 .append('path')
 .attr('d', arc)
@@ -227,7 +234,28 @@ var path = g.selectAll('path')
 function updateScatter(scatter_data){
 
     // update scatterplot
-    
+    var svg = d3.select("#scatterChart");
+
+    var circle = svg.selectAll("circle")
+    .data(scatter_data);
+
+    circle.enter()
+    .append("circle")
+    .attr("class", "bubble")
+    .attr("cx", function(d){
+      return xScale(d.predicted_price);
+    })
+    .attr("cy", function(d){
+      return yScale(d.list_price);
+    })
+    .attr("r", function(d){
+      return radius(d.baths);
+    })
+    .style("fill", "#0973C8")
+    .style("fill-opacity", 0.5)
+    .merge(circle);
+
+    circle.exit().remove();
 
 }
 
