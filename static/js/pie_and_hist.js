@@ -3,11 +3,11 @@
 
 d3.json("/load_data", function(data){
 
-// group data using d3.nest()
 // define variable scatter_data
-// define svg, margin, width, height, and g elements
+
 data = data['condos'];
 
+// group data using d3.nest()
 var bedrooms_data = d3.nest()
 .key(function(d){
   return d.beds;
@@ -17,6 +17,7 @@ var bedrooms_data = d3.nest()
 })
 .entries(data);
 
+// define svg, margin, width, height, and g elements
 var svg = d3.select("#donutChart").attr('class', 'pie')
   margin = {top: 0, right: 30, bottom: 30, left: 30},
   width = +svg.attr("width") - margin.left - margin.right,
@@ -24,8 +25,6 @@ var svg = d3.select("#donutChart").attr('class', 'pie')
   g = svg.append("g")
     .attr("transform", "translate(" + (width/1.6) + "," + (height/1.73) + ")");
 
-
-// uncomment following lines 
   var text = "";
 
   var width = svg.attr("width");
@@ -34,6 +33,7 @@ var svg = d3.select("#donutChart").attr('class', 'pie')
   var duration = 500;
 
 
+  // define radius and color
   var radius = Math.min(width, height) / 2;
   var color = d3.scaleOrdinal()
   .domain(bedrooms_data.keys())
@@ -124,29 +124,15 @@ var path = g.selectAll('path')
 .each(function(d,i){
   this._current = i;
 });
-
-
-// function on click should look like:
- /*.on("click", function(d){
-
-      //filter data and call function
-      updateScatter(scatter_data)  
-    })
-*/
-
-
-// append text in g element
-
 });
 
 //////////////////////////////////// SCATTER-PLOT CODE START HERE ///////////////////////////////////
 
-
-
-  //convert from strings to numerical values
+  // load condo database into javascript
   d3.json("/load_data", function(data){
     data = data['condos'];
 
+    // convert from strings to numerical values
     data.forEach(function(d){
       d.predicted_price = +d.predicted_price;
       d.list_price = +d.list_price;
@@ -185,9 +171,6 @@ var path = g.selectAll('path')
   var yAxis = d3.axisLeft()
   .scale(yScale)
   .ticks(5);
-  // create xScale.domain
-  // create yScale.domain
-  // create rad.domain
   // append xAxis in g
   g.append("g")
   .attr("transform", "translate(0,"+height+")")
@@ -231,14 +214,18 @@ var path = g.selectAll('path')
 
   });
 
+// update scatterplot with only data for condos with a specific number of bedrooms
 function updateScatter(scatter_data){
 
-    // update scatterplot
+    // select scatterPlot to update data
     var svg = d3.select("#scatterChart");
 
+    // select all of the circles in scatterChart
     var circle = svg.selectAll("circle")
+    // specify data to be the new scatter_data
     .data(scatter_data);
 
+    // draw the circles again with new data
     circle.enter()
     .append("circle")
     .attr("class", "bubble")
@@ -254,7 +241,7 @@ function updateScatter(scatter_data){
     .style("fill", "#0973C8")
     .style("fill-opacity", 0.5)
     .merge(circle);
-
+    
     circle.exit().remove();
 
 }
