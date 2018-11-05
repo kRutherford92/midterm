@@ -100,7 +100,8 @@ var path = g.selectAll('path')
       scatterData[i++]=data[c];
     }
   }
-  updateScatter(scatterData, data);
+  //updateScatter(scatterData, data);
+  updateScatter(d.data.key);
 })
 .append('path')
 .attr('d', arc)
@@ -216,53 +217,19 @@ var path = g.selectAll('path')
   });
 
 // update scatterplot with only data for condos with a specific number of bedrooms
-function updateScatter(scatter_data, all_data){
+function updateScatter(scatter_data){
     // select scatterPlot to update data
+    console.log(scatter_data);
     var svg = d3.select("#scatterChart");
 
     // select all of the circles in scatterChart
     var circle = svg.selectAll("circle")
     // specify data to be the new scatter_data
-    .data(scatter_data);
-    // draw the circles again with new data
-    var xScale = d3.scaleLinear()
-    .domain(d3.extent(all_data, function(d){
-      return d.predicted_price;
-    }))
-    .range([0, width]);
-    // call yScale
-    var yScale = d3.scaleLinear()
-    .domain(d3.extent(all_data, function(d){
-      return d.list_price;
-    }))
-    .range([height, 0]);
-    // call rad (stands for radius)
-    var radius = d3.scaleSqrt()
-    .range([2,5])
-    .domain(d3.extent(all_data, function(d){
-      return d.baths/4;
-    })).nice();
-    console.log(circle);
-
-    circle.enter()
-    .append("circle")
-    .attr("cx", function(d){
-      return xScale(d.predicted_price);
+    .style("fill-opacity", function(d){
+      if(d.beds==scatter_data){
+        return 0.5;
+      } else {
+        return 0;
+      }
     })
-    .attr("cy", function(d){
-      return yScale(d.list_price);
-    })
-    .attr("r", function(d){
-      return radius(d.baths);
-    })
-    .attr("class", "bubble")
-    .style("fill", "#0973C8")
-    .style("fill-opacity", 0.5);
-    console.log(circle);
-
-    circle.exit().remove();
-    console.log(circle);
-    console.log("\n\n\n");
 }
-
-
