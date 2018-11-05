@@ -100,7 +100,7 @@ var path = g.selectAll('path')
       scatterData[i++]=data[c];
     }
   }
-  updateScatter(scatterData);
+  updateScatter(scatterData, data);
 })
 .append('path')
 .attr('d', arc)
@@ -127,7 +127,6 @@ var path = g.selectAll('path')
 });
 
 //////////////////////////////////// SCATTER-PLOT CODE START HERE ///////////////////////////////////
-
   // load condo database into javascript
   d3.json("/load_data", function(data){
     data = data['condos'];
@@ -167,10 +166,12 @@ var path = g.selectAll('path')
   var xAxis = d3.axisBottom()
   .scale(xScale)
   .ticks(3);
+
   // create yAxis
   var yAxis = d3.axisLeft()
   .scale(yScale)
   .ticks(5);
+
   // append xAxis in g
   g.append("g")
   .attr("transform", "translate(0,"+height+")")
@@ -215,8 +216,7 @@ var path = g.selectAll('path')
   });
 
 // update scatterplot with only data for condos with a specific number of bedrooms
-function updateScatter(scatter_data){
-
+function updateScatter(scatter_data, all_data){
     // select scatterPlot to update data
     var svg = d3.select("#scatterChart");
 
@@ -224,11 +224,28 @@ function updateScatter(scatter_data){
     var circle = svg.selectAll("circle")
     // specify data to be the new scatter_data
     .data(scatter_data);
-
     // draw the circles again with new data
+    var xScale = d3.scaleLinear()
+    .domain(d3.extent(all_data, function(d){
+      return d.predicted_price;
+    }))
+    .range([0, width]);
+    // call yScale
+    var yScale = d3.scaleLinear()
+    .domain(d3.extent(all_data, function(d){
+      return d.list_price;
+    }))
+    .range([height, 0]);
+    // call rad (stands for radius)
+    var radius = d3.scaleSqrt()
+    .range([2,5])
+    .domain(d3.extent(all_data, function(d){
+      return d.baths/4;
+    })).nice();
+    console.log(circle);
+
     circle.enter()
     .append("circle")
-    .attr("class", "bubble")
     .attr("cx", function(d){
       return xScale(d.predicted_price);
     })
@@ -238,12 +255,14 @@ function updateScatter(scatter_data){
     .attr("r", function(d){
       return radius(d.baths);
     })
+    .attr("class", "bubble")
     .style("fill", "#0973C8")
-    .style("fill-opacity", 0.5)
-    .merge(circle);
-    
-    circle.exit().remove();
+    .style("fill-opacity", 0.5);
+    console.log(circle);
 
+    circle.exit().remove();
+    console.log(circle);
+    console.log("\n\n\n");
 }
 
 

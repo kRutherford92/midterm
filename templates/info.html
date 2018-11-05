@@ -24,7 +24,7 @@
         <br><br>
         <p>Bedrooms: <b>{{ condo.beds }}</b> | Bathrooms: <b>{{ condo.baths }}</b> | Sqft: <b>{{ condo.sqft }}</b> | Price per sqft: <b>${{ condo.ppsf }}</b></p>
         <br>
-        <p>Listing Price: <b>${{ condo.list_price }}</b><br>Predicted Price: <b>${{ condo.predicted_price }}</b></p>
+        <p>Listing Price: <b>${{ '{:,}'.format(condo.list_price) }}.00</b><br>Predicted Price: <b>${{ '{:,}'.format(condo.predicted_price) }}</b></p>
 
         <blockquote><!-- remarks -->{{ condo.remarks }} </blockquote> 
       
