@@ -161,7 +161,7 @@ var path = g.selectAll('path')
   var radius = d3.scaleSqrt()
   .range([2,5])
   .domain(d3.extent(data, function(d){
-    return d.baths/4;
+    return d.baths/8;
   })).nice();
   // create xAxis
   var xAxis = d3.axisBottom()
@@ -219,7 +219,6 @@ var path = g.selectAll('path')
 // update scatterplot with only data for condos with a specific number of bedrooms
 function updateScatter(scatter_data){
     // select scatterPlot to update data
-    console.log(scatter_data);
     var svg = d3.select("#scatterChart");
 
     // select all of the circles in scatterChart
